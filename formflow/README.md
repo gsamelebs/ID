@@ -56,7 +56,7 @@ graph TD
 - `frontend/` — React app and frontend Dockerfile
 - `backend/` — Express API and backend Dockerfile
 - `database/init/` — PostgreSQL schema initialization SQL
-- `.github/workflows/ci-cd.yml` — validation, build, push, deploy workflow
+- `.github/workflows/main.yml` — validation, build, push, deploy workflow
 - `docker-compose.prod.yml` — production compose file used on the VM
 - `scripts/` — small helper scripts for local verification and deployment
 - `docs/screenshots/` — evidence screenshots for the capstone
@@ -128,7 +128,7 @@ The database persists through container restarts using the named volume `postgre
 
 ## CI/CD
 
-The GitHub Actions workflow in `.github/workflows/ci-cd.yml` performs:
+The GitHub Actions workflow in `.github/workflows/main.yml` performs:
 
 1. validation
 2. Docker image build

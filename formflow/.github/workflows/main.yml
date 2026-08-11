@@ -18,10 +18,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          package-manager-cache: false
+
+      - name: Verify project layout
+        run: |
+          test -f backend/package.json
+          test -f frontend/package.json
+          test -f docker-compose.yml
+          test -f docker-compose.prod.yml
 
       - name: Install backend dependencies
         working-directory: backend
-        run: npm install
+        run: npm install --no-audit --no-fund
 
       - name: Run backend tests
         working-directory: backend
@@ -29,7 +37,7 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: frontend
-        run: npm install
+        run: npm install --no-audit --no-fund
 
       - name: Run frontend tests
         working-directory: frontend
