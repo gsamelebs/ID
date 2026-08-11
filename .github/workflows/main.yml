@@ -16,29 +16,29 @@ jobs:
 
       - name: Verify project layout
         run: |
-          test -f backend/package.json
-          test -f frontend/package.json
-          test -f docker-compose.yml
-          test -f docker-compose.prod.yml
+          test -f formflow/backend/package.json
+          test -f formflow/frontend/package.json
+          test -f formflow/docker-compose.yml
+          test -f formflow/docker-compose.prod.yml
 
       - name: Install backend dependencies
-        working-directory: backend
+        working-directory: formflow/backend
         run: npm install --no-audit --no-fund
 
       - name: Run backend tests
-        working-directory: backend
+        working-directory: formflow/backend
         run: npm test
 
       - name: Install frontend dependencies
-        working-directory: frontend
+        working-directory: formflow/frontend
         run: npm install --no-audit --no-fund
 
       - name: Run frontend tests
-        working-directory: frontend
+        working-directory: formflow/frontend
         run: npm test
 
       - name: Build frontend
-        working-directory: frontend
+        working-directory: formflow/frontend
         run: npm run build
 
   build-and-push:
@@ -60,13 +60,13 @@ jobs:
         run: |
           docker build \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/formflow-backend:${{ github.sha }} \
-            ./backend
+            ./formflow/backend
 
       - name: Build frontend image
         run: |
           docker build \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/formflow-frontend:${{ github.sha }} \
-            ./frontend
+            ./formflow/frontend
 
       - name: Push backend image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/formflow-backend:${{ github.sha }}
@@ -115,8 +115,8 @@ jobs:
 
       - name: Copy deployment files to VM
         run: |
-          scp docker-compose.prod.yml .env.deploy ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }}:~/formflow/
-          scp database/init/init.sql ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }}:~/formflow/database/init/
+          scp formflow/docker-compose.prod.yml .env.deploy ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }}:~/formflow/
+          scp formflow/database/init/init.sql ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }}:~/formflow/database/init/
 
       - name: Deploy via SSH
         run: |
